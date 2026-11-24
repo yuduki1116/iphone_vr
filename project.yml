@@ -1,0 +1,28 @@
+name: VROS
+options:
+  bundleIdPrefix: dev.yuduki
+  deploymentTarget:
+    iOS: "17.0"
+targets:
+  VROS:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.yuduki.vros
+        PRODUCT_NAME: VROS
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        MARKETING_VERSION: "4.0"
+        CURRENT_PROJECT_VERSION: "4"
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: VR OS
+        NSCameraUsageDescription: パススルー表示と手の認識にカメラを使用します。
+        NSLocalNetworkUsageDescription: PCからの画面受信に使用します。
+        UIRequiresFullScreen: true
+        UIStatusBarHidden: true
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationLandscapeRight]

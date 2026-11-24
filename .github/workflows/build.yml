@@ -1,0 +1,33 @@
+name: build
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  ios:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen generate
+      - name: Build (unsigned)
+        run: |
+          xcodebuild -project VROS.xcodeproj -scheme VROS -configuration Release \
+            -sdk iphoneos -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+          mkdir Payload
+          cp -R build/Build/Products/Release-iphoneos/VROS.app Payload/
+          zip -qr vros_v4.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vros_v4
+          path: vros_v4.ipa
+  pc:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install mss pillow pyautogui pyinstaller
+      - run: pyinstaller --onefile --name pc_sender pc/pc_sender.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pc_sender
+          path: dist/pc_sender.exe
